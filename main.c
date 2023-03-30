@@ -38,8 +38,8 @@ int main()
             case 4:
                 //Function to edit board
                 break;
-            case 5:
-                //Save board to a file
+            default:
+                //Function to save board to a file
                 break;
         }
 

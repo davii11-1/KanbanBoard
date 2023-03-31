@@ -17,12 +17,21 @@ int main()
         printf("4. Edit Board\n");
         printf("5. Save board to a file\n");
         printf("6. Quit\n");
-        printf("Enter your choice (1-5): ");
+        printf("Enter your choice (1-6): ");
         scanf("%d", &choice);
 
-        while(choice < 1 || choice > 6)
+        while(choice < 1 || choice > 6) //Ensures that input is one of the 6 options
         {
-            printf("\nEnter your choice again (1-5): ");
+            printf("\nImpossible option\n");
+
+            printf("\n1. Display board\n");
+            printf("2. Load board from a file\n");
+            printf("3. Edit list\n");
+            printf("4. Edit Board\n");
+            printf("5. Save board to a file\n");
+            printf("6. Quit\n");
+
+            printf("\nEnter your choice again (1-6): ");
             scanf("%d", &choice);
         }
 
@@ -45,9 +54,11 @@ int main()
             case 5:
                 //Save board to a file
                 break;
+            default:
+                break;
         }
 
     }
 
-return 0;
+    return 0;
 }

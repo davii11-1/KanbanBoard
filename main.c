@@ -8,7 +8,7 @@ int main()
     FILE * filePtr;
     char str[20];
 
-    while(choice != 6) //Terminates when the quit option is selected
+    while(choice != 6) //Terminates the program when the quit option is selected
     {
         printf("\nMenu:\n");
         printf("1. Display board\n");

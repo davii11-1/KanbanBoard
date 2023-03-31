@@ -5,10 +5,11 @@ int main()
 {
     int choice=1;
     FILE * filePtr;
+    char str[20];
 
     while(choice != 6) //Terminates when the quit option is selected
     {
-        printf("Menu:\n");
+        printf("\nMenu:\n");
         printf("1. Display board\n");
         printf("2. Load board from a file\n");
         printf("3. Edit list\n");
@@ -30,7 +31,9 @@ int main()
                 //Function to display template board
                 break;
             case 2:
-                //Function to load a board from a file
+                printf("\nEnter filename: ");
+                scanf("%s",str); //Takes input of filename
+                LoadFile(str); //Function to load a board from a file
                 break;
             case 3:
                 //Function to edit list
@@ -38,8 +41,8 @@ int main()
             case 4:
                 //Function to edit board
                 break;
-            default:
-                //Function to save board to a file
+            case 5:
+                //Save board to a file
                 break;
         }
 

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "Functions.h"
 
 int main()
@@ -8,7 +7,7 @@ int main()
     FILE * filePtr;
     char str[20];
 
-    while(choice != 6) //Terminates the program when the quit option is selected
+    while(choice != 6) //Terminates when the quit option is selected
     {
         printf("\nMenu:\n");
         printf("1. Display board\n");
@@ -22,8 +21,6 @@ int main()
 
         while(choice < 1 || choice > 6) //Ensures that input is one of the 6 options
         {
-            printf("\nImpossible option\n");
-
             printf("\n1. Display board\n");
             printf("2. Load board from a file\n");
             printf("3. Edit list\n");
@@ -31,7 +28,8 @@ int main()
             printf("5. Save board to a file\n");
             printf("6. Quit\n");
 
-            printf("\nEnter your choice again (1-6): ");
+            printf("\nYou inputted an unavailable option\n");
+            printf("Enter your choice again (1-6): ");
             scanf("%d", &choice);
         }
 

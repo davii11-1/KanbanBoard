@@ -5,7 +5,7 @@ int main()
 {
     int choice=1;
     FILE * filePtr;
-    char str[20];
+    char str[35];
 
     while(choice != 6) //Terminates when the quit option is selected
     {

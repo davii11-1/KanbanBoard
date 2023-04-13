@@ -55,6 +55,7 @@ struct List* Create_Node_List(char* name)
     {
         strcpy(newnode->name, name);
         newnode->next = NULL;
+        newnode->prev = NULL;
         newnode->first_item = NULL;
     }
     return newnode;
@@ -63,10 +64,10 @@ struct List* Create_Node_List(char* name)
 void ListPushBack(struct List *p, char* name)
 {
     struct List* newnode = Create_Node_List(name);
-
     if (p->next == NULL)
     {
         p->next = newnode;
+        newnode->prev = p;
     }
     else
     {
@@ -76,6 +77,41 @@ void ListPushBack(struct List *p, char* name)
             cur = cur->next;
         }
         cur->next = newnode;
+        newnode->prev = cur;
+    }
+}
+
+void Delete_List(struct List* p,struct List* pos)
+{
+    struct List* cur = p;
+    while (cur->next != NULL)
+    {
+        if(strcmp(cur->name,pos->name) == 0)
+        {
+            break;
+        }
+        else
+        {
+            cur = cur->next;
+        }
+    }
+    struct List* prev = cur->prev;
+    struct List* nex = cur->next;
+    if(nex != NULL)
+    {
+        nex->prev = cur->prev;
+    }
+    else
+    {
+        prev->next = NULL;
+    }
+    if(prev != NULL)
+    {
+        prev->next = cur->next;
+    }
+    else
+    {
+        nex->prev = NULL;
     }
 }
 
@@ -103,7 +139,11 @@ void ItemPushBack(struct List *p, char* name)
 {
     struct Item* newnode = Create_Node_Item(name);
     struct Item* item_name = p->first_item;
-    if (item_name->next == NULL)
+    if (item_name == NULL)
+    {
+        p->first_item = newnode;
+    }
+    else if (item_name->next == NULL)
     {
         item_name->next = newnode;
         newnode->prev = item_name;
@@ -148,6 +188,7 @@ struct Item* Create_Node_Item(char* name)
     {
         strcpy(newnode->name, name);
         newnode->next = NULL;
+        newnode->prev = NULL;
     }
     return newnode;
 }
@@ -185,9 +226,17 @@ void Delete_item(struct List* p,struct Item* pos)
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //All functions about the whole board
 void printLinkedlist(struct List *p){
+    int count = 0;
+    printf("------------------------------------------\n");
     struct List* ListName = p;
     while (ListName != NULL)
     {
+        if(count == 0)
+        {
+            count++;
+            ListName = ListName->next;
+            continue;
+        }
         printf("%s\n", ListName->name);
         struct Item* item = ListName->first_item;
         while(item != NULL)
@@ -197,4 +246,109 @@ void printLinkedlist(struct List *p){
         }
         ListName = ListName->next;
     }
+    printf("------------------------------------------\n");
 }
+
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//All functions about file_check
+int binary_file_check(char filename[])
+{
+    int found=0;
+    int len;
+    int indx = 0;
+    len = strlen(filename);
+    char str[len];
+    int binary=0;
+
+    for(int i=0; i < len; i++)
+    {
+        if(filename[i] == '.') //Fullstop is found
+        {
+            found = 1;
+        }
+
+        if(found == 1) //We then obtain the file extension for later comparison
+        {
+            str[indx] = filename[i];
+            indx+=1;
+        }
+    }
+
+    str[indx] = '\0'; //Ends the string with the null terminator
+
+    if(strcmp(str,".dat")==0) //If the file extension is one for a binary file we return True .i.e 1
+    {
+        binary = 1;
+    }
+
+    if(strcmp(str,".txt")==0) //If the file extension isn't one for a binary file we return False .i.e 0
+    {
+        binary = 0;
+    }
+
+    return binary;
+}
+
+void LoadFile(char filename[20],struct List* list)
+{
+    FILE * filePtr;
+    int read_type;
+
+    read_type = binary_file_check(filename); //Determines if the file is binary or not
+
+    if(read_type==1) //Does a binary read if it's a binary file
+    {
+        if ((filePtr = fopen(filename, "rb")) == NULL)
+        {
+            printf("Error: could not open file %s\n", filename); // If the file isn't found we print an error
+        }
+        else
+        {
+            char row[20];
+            fgets(row,20,filePtr);
+            row[strcspn(row, "\n")] = 0; //Delete enter
+            strcpy(list->name, row);
+            struct List* CurList = list;
+            while (fgets(row,20,filePtr) != NULL)
+            {
+                row[strcspn(row, "\n")] = 0; //Delete enter
+                if(strchr(row,'\t') != NULL) // if there is a "tab" which means it is item
+                {
+                    /*
+                     * Delete \t from row.
+                     */
+                    int k = 0;
+                    for (int i = 0; row[i]!='\0'; i++)
+                    {
+                        if (row[i] != '\t'){
+                            row[k++] = row[i];
+                        }
+                    }
+                    row[k] = '\0';
+                    ItemPushBack(CurList,row);
+                }
+                else
+                {
+                    ListPushBack(CurList,row);
+                    CurList = CurList->next;
+                }
+
+            }
+        }
+    }
+    else //Does a non-binary read if it isn't a binary file
+    {
+        if ((filePtr = fopen(filename, "r")) == NULL)
+        {
+            printf("Error: could not open file %s\n", filename); // If the file isn't found we print an error
+        }
+//        else
+//        {
+/*              else is currently commented out because we require a linked list to
+                load the information of the file into */
+//        }
+    }
+    fclose(filePtr);
+
+}
+

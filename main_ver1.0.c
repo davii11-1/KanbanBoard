@@ -13,7 +13,6 @@ void Edit_List_Choice(struct List* list);
 int choice = 0;
 
 
-
 int main()
 {
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -24,6 +23,7 @@ int main()
     list1->next = list2;
     list1->prev = NULL;
     list1->first_item = NULL;
+    strcpy(list1->name, "Blank");
     list2->prev = list1;
     char str[35];
 
@@ -84,7 +84,8 @@ int main()
                 Edit_List_Choice(list2);
                 break;
             case 5:
-                //Save board to a file
+                choice = 0;
+                write_as_file(list1);
                 break;
             default:
                 break;
@@ -258,7 +259,6 @@ void Example_Board(struct List* start_list)
     list4->prev = list3;
     list3->prev = list2;
     list2->prev = start_list;
-    //start_list->prev = NULL;
 
     start_list->next = list2;
     list2->next = list3;

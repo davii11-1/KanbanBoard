@@ -250,7 +250,7 @@ void printLinkedlist(struct List *p){
 }
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-//All functions about file_check
+//All functions about file
 int binary_file_check(char filename[])
 {
     int found=0;
@@ -350,5 +350,34 @@ void LoadFile(char filename[20],struct List* list)
     }
     fclose(filePtr);
 
+}
+
+void write_as_file(struct List* list)
+{
+    FILE* F ;
+    F = fopen("Test.dat","wb+");
+    struct List* curList = list;
+    while(curList != NULL)
+    {
+        if(strcmp(curList->name, "Blank") == 0)
+        {
+            curList = curList->next;
+            continue;
+        }
+        fprintf(F,"%s\n\t",curList->name);
+        struct Item* curItem = curList->first_item;
+        while (curItem != NULL)
+        {
+            if(curItem->next ==NULL)
+            {
+                fprintf(F,"%s\n",curItem->name);
+                break;
+            }
+            fprintf(F,"%s\n\t",curItem->name);
+            curItem = curItem->next;
+        }
+        curList = curList->next;
+    }
+    fclose(F);
 }
 

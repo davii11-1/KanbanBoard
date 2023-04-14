@@ -48,7 +48,9 @@ struct Item* Create_Node_Item(char* name);
 void printLinkedlist(struct List *p);
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-//All functions about the file check
+//All functions about the file
 void LoadFile(char filename[20],struct List* list);
 
 int binary_file_check(char filename[]);
+
+void write_as_file(struct List* list);

@@ -3,23 +3,14 @@
 #include <string.h>
 #include "functions.h"
 
-<<<<<<< HEAD
-int main()
-{
-    //Initialize the example board
-    struct List* list1 = malloc(sizeof(struct List));
-    strcpy(list1->name, "Bro:");
-    list1->prev = NULL;
-=======
 void MainMenu();
-void Edit_List_Menu();
 void Example_Board(struct List* start_list);
+void Edit_List_Menu();
 void Edit_Item_Menu();
 void Edit_Item_Choice(struct List* list);
 void Edit_List_Choice(struct List* list);
 
 int choice = 0;
-
 
 int main()
 {
@@ -39,7 +30,7 @@ int main()
     {
         MainMenu();
         scanf("%d", &choice);
-
+        getchar();
         while(choice < 0 || choice > 6) //Ensures that input is one of the 6 options
         {
             printf("\n1. Display board\n");
@@ -52,6 +43,7 @@ int main()
             printf("\nYou inputted an unavailable option\n");
             printf("Enter your choice again (1-6): ");
             scanf("%d", &choice);
+            getchar();
         }
 
         switch(choice)
@@ -100,7 +92,11 @@ int main()
         }
 
     }
-    printLinkedlist(list1);
+
+    printf(".,__,.....,__,.....╭¬¬¬¬¬¬━━╮\n");
+    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::|:^-----^\n");
+    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::||.◕‿‿◕.|\n");
+    printf("-....--*-...-*-.---╰O━━━━━━O╯╰-O-O--╯\n");
     return 0;
 }
 
@@ -226,7 +222,6 @@ void Edit_List_Menu()
 void Example_Board(struct List* start_list)
 {
     strcpy(start_list->name, "Bro:");
->>>>>>> 3dcc862e7508d03c9dff5e3ee3adb03d4ef3d9a8
     struct Item* item1_1 = malloc(sizeof(struct Item));
     strcpy(item1_1->name, "Oculus Pro");
     struct Item* item1_2 = malloc(sizeof(struct Item));
@@ -235,11 +230,7 @@ void Example_Board(struct List* start_list)
     item1_2->next = NULL;
     item1_1->prev = NULL;
     item1_2->prev = item1_1;
-<<<<<<< HEAD
-    list1->first_item = item1_1;
-=======
     start_list->first_item = item1_1;
->>>>>>> 3dcc862e7508d03c9dff5e3ee3adb03d4ef3d9a8
 
     struct List* list2 = malloc(sizeof(struct List));
     strcpy(list2->name, "Dante:");
@@ -271,33 +262,6 @@ void Example_Board(struct List* start_list)
 
     list4->prev = list3;
     list3->prev = list2;
-<<<<<<< HEAD
-    list2->prev = list1;
-    list1->prev = NULL;
-    list1->next = list2;
-    list2->next = list3;
-    list3->next = list4;
-    list4->next = NULL;
-
-    printLinkedlist(list1);
-    Edit_list(list1,"Bro:","BROOO:");
-    printf("*----------------------*\n");
-    printLinkedlist(list1);
-    ListPushBack(list4, "list5:");
-    printf("*----------------------*\n");
-    printLinkedlist(list1);
-    printf("*----------------------*\n");
-    Edit_item(list1,"Oculus Pro","WOCAO OP!");
-    printLinkedlist(list1);
-    printf("*----------------------*\n");
-    ItemPushBack(list4,"NEW_item");
-    printLinkedlist(list1);
-    printf("*----------------------*\n");
-    Delete_item(list4, ItemFind(list4,"NEW_item"));
-    printLinkedlist(list1);
-}
-
-=======
     list2->prev = start_list;
 
     start_list->next = list2;
@@ -305,4 +269,3 @@ void Example_Board(struct List* start_list)
     list3->next = list4;
     list4->next = NULL;
 }
->>>>>>> 3dcc862e7508d03c9dff5e3ee3adb03d4ef3d9a8

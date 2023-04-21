@@ -262,12 +262,39 @@ int binary_file_check(char filename[30])
 
     str[indx] = '\0'; //Ends the string with the null terminator
 
-    if(strcmp(str,".dat")==0 || strcmp(str,".bin")==0) //If the file extension is one for a binary file we return True .i.e 1
+    if(     strcmp(str,".dat")==0 ||
+            strcmp(str,".bin")==0 ||
+            strcmp(str, ".jpg") == 0 ||
+            strcmp(str, ".jpeg") == 0 ||
+            strcmp(str, ".png") == 0 ||
+            strcmp(str, ".gif") == 0 ||
+            strcmp(str, ".bmp") == 0 ||
+            strcmp(str, ".wav") == 0 ||
+            strcmp(str, ".mp3") == 0 ||
+            strcmp(str, ".mp4") == 0 ||
+            strcmp(str, ".avi") == 0 ||
+            strcmp(str, ".mov") == 0 ||
+            strcmp(str, ".pdf") == 0 ||
+            strcmp(str, ".doc") == 0 ||
+            strcmp(str, ".docx") == 0 ||
+            strcmp(str, ".xls") == 0 ||
+            strcmp(str, ".xlsx") == 0 ||
+            strcmp(str, ".ppt") == 0 ||
+            strcmp(str, ".pptx") == 0) //If the file extension is one for a binary file we return True .i.e 1
     {
         binary = 1;
     }
 
-    if(strcmp(str,".txt")==0) //If the file extension isn't one for a binary file we return False .i.e 0
+    if(     strcmp(str,".txt")==0 ||
+            strcmp(str, ".c") == 0 ||
+            strcmp(str, ".h") == 0 ||
+            strcmp(str, ".py") == 0 ||
+            strcmp(str, ".cpp") == 0 ||
+            strcmp(str, ".hpp") == 0 ||
+            strcmp(str,".java") == 0 ||
+            strcmp(str, ".js") == 0 ||
+            strcmp(str, ".html") == 0 ||
+            strcmp(str, ".css") == 0) //If the file extension isn't one for a binary file we return False .i.e 0
     {
         binary = 0;
     }

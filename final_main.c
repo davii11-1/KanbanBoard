@@ -90,7 +90,6 @@ int main()
                 len = strlen(filename)-1;
                 filename[len] = '\0'; //Removes the newline character
                 Option_2(filename,FileListNodePtr); //Loads file into new board
-                printLinkedlist(FileListNodePtr);
                 break;
             case 3:
                 printf("\nEnter the name of the list to edit: ");

@@ -14,7 +14,10 @@ struct Item
 };
 
 void Option_2(char filename[30], struct List *p);
+
 int binary_file_check(char filename[30]);
+
+void printLinkedlist(struct List *p);
 
 struct List* ListFind(struct List *p,char* name);
 
@@ -26,8 +29,7 @@ struct List* Create_Node_List(char* name);
 
 void ListPushBack(struct List *p, char* name);
 
-void Option_3(struct List *p);
-void Option_4(struct List *p);
+void freeAllMemory(struct List *p);
 void Option_5(char* filename, struct List *p);
 
 struct Item* ItemFind(struct List *p,char* name);

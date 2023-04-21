@@ -129,6 +129,20 @@ struct Item* ItemFind(struct List *p,char* name)
     printf("Can't find the item\n");
     return NULL;
 }
+struct Item* Create_Node_Item(char* name)
+{
+    struct Item* newnode = malloc(sizeof(struct Item));
+    if (newnode == NULL)
+    {
+        printf("malloc fail\n");
+    }
+    else
+    {
+        strcpy(newnode->name, name);
+        newnode->next = NULL;
+    }
+    return newnode;
+}
 
 void ItemPushBack(struct List *p, char* name)
 {
@@ -166,21 +180,6 @@ void Edit_item(struct List *p ,char* lastname ,char* newname)
             list_name = list_name->next;
         }
     }
-}
-
-struct Item* Create_Node_Item(char* name)
-{
-    struct Item* newnode = malloc(sizeof(struct Item));
-    if (newnode == NULL)
-    {
-        printf("malloc fail\n");
-    }
-    else
-    {
-        strcpy(newnode->name, name);
-        newnode->next = NULL;
-    }
-    return newnode;
 }
 
 void Delete_item(struct List* p,struct Item* pos)
@@ -406,149 +405,7 @@ void Option_2(char filename[50], struct List *p)
 
 }
 
-void Edit_Item_Menu()
-{
-    printf("\nOptions:\n");
-    printf("1. Edit an item\n");
-    printf("2. Add a new item\n");
-    printf("3. Delete an item\n");
-    printf("4. Return to main menu\n");
-    printf("Enter your choice (1-4): ");
-    scanf("%d", &choice);
-    fgetc(stdin);
-}
 
-void Edit_List_Menu()
-{
-    printf("\nOptions:\n");
-    printf("1. Edit the name of a list\n");
-    printf("2. Add a new list \n");
-    printf("3. Delete a list\n");
-    printf("4. Return to main menu\n");
-    printf("Enter your choice (1-4): ");
-    scanf("%d", &choice);
-    fgetc(stdin);
-}
-
-
-void Edit_Item_Choice(struct List* list)
-{
-    char old_name[20];
-    char new_name[20];
-    while (choice != 4)
-    {
-        Edit_Item_Menu();
-        switch(choice)
-        {
-            case 1:
-                //Edit an item in the list
-                printf("Enter the name of the list to edit: ");
-                fgets(old_name,20,stdin);
-                old_name[strcspn(old_name, "\n")] = 0;
-                printf("Enter the new name for item ' %s ': ",old_name);
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                Edit_list(list,old_name,new_name);
-                choice = 0;
-                break;
-            case 2:
-                printf("Enter the name of new item:");
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                ItemPushBack(list,new_name);
-                choice = 0;
-                break;
-            case 3:
-                printf("Enter the name of the item to delete: ");
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                Delete_item(list,ItemFind(list,new_name));
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-void Edit_List_Choice(struct List* list)
-{
-    char old_name[20];
-    char new_name[20];
-    while (choice != 4)
-    {
-        Edit_List_Menu();
-        switch(choice)
-        {
-            case 1:
-                printf("Enter the name of the list to edit: ");
-                fgets(old_name,20,stdin);
-                old_name[strcspn(old_name, "\n")] = 0;
-                if (ListFind(list,old_name) == NULL)
-                {
-                    break;
-                }
-                printf("Enter the new name for list ' %s ': ",old_name);
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                Edit_list(list,old_name,new_name);
-                choice = 0;
-                break;
-            case 2:
-                // Add a new list
-                printf("Enter the name of new list:");
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                ListPushBack(list,new_name);
-                choice = 0;
-                break;
-            case 3:
-                //delete a list
-                printf("Enter the name of the list to delete: ");
-                fgets(new_name,20,stdin);
-                new_name[strcspn(new_name, "\n")] = 0;
-                Delete_List(list, ListFind(list,new_name));
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-void fprintLinkedlist(FILE * filePtr, struct List *p){
-    struct List* ListName = p;
-    while (ListName != NULL)
-    {
-        fprintf(filePtr, "%s\n", ListName->name); //print list name to non-binary file
-        struct Item* item = ListName->first_item; //Set pointer of type struct item as the first item of the current list
-        while(item != NULL)
-        {
-            fprintf(filePtr, "\t%s\n", item->name); //print current item of the current list to the non-binary file
-            item = item->next; //Set the item to the next item and repeat the process until there are no items left
-        }
-        ListName = ListName->next; //Set it to the next list and repeat the process until there are no lists left
-    }
-}
-
-void fwriteLinkedlist(struct List *p, FILE * filePtr){
-    struct List* ListName = p;
-    while (ListName != NULL)
-    {
-        int len = strlen(ListName->name); //Obtain the length of the list name for the count parameter of fwrite
-        fwrite(ListName->name, sizeof(char), len, filePtr); //print list name to binary file
-        fwrite("\n",sizeof(char), 1, filePtr);
-        struct Item* item = ListName->first_item; //Set pointer of type struct item as the first item of the current list
-        while(item != NULL)
-        {
-            int len2 = strlen(item->name); //Obtain the length of the item name for the count parameter of fwrite
-            fwrite("\t", sizeof(char), 1, filePtr);
-            fwrite(item->name, sizeof(char), len2, filePtr); //print current item of the current list to the binary file
-            fwrite("\n",sizeof(char), 1, filePtr);
-            item = item->next;  //Set the item to the next item and repeat the process until there are no items left
-
-        }
-        ListName = ListName->next;  //Set it to the next list and repeat the process until there are no lists left
-    }
-}
 
 void freeAllMemory(struct List *p)
 {
@@ -612,3 +469,79 @@ void freeAllMemory(struct List *p)
     }
 }
 
+
+void fprintLinkedlist(FILE * filePtr, struct List *p){
+    struct List* ListName = p;
+    while (ListName != NULL)
+    {
+        if(strcmp(ListName->name,"Blank") != 0) {
+            fprintf(filePtr, "%s\n", ListName->name); //print list name to non-binary file
+
+            struct Item *item = ListName->first_item; //Set pointer of type struct item as the first item of the current list
+
+            while (item != NULL) {
+                fprintf(filePtr, "\t%s\n", item->name); //print current item of the current list to the non-binary file
+                item = item->next; //Set the item to the next item and repeat the process until there are no items left
+            }
+        }
+        ListName = ListName->next; //Set it to the next list and repeat the process until there are no lists left
+    }
+}
+
+void fwriteLinkedlist(struct List *p, FILE * filePtr){
+    struct List* ListName = p;
+    while (ListName != NULL)
+    {
+        if(strcmp(ListName->name,"Blank") != 0) {
+            int len = strlen(ListName->name); //Obtain the length of the list name for the count parameter of fwrite
+            fwrite(ListName->name, sizeof(char), len, filePtr); //print list name to binary file
+            fwrite("\n", sizeof(char), 1, filePtr);
+            struct Item *item = ListName->first_item; //Set pointer of type struct item as the first item of the current list
+            while (item != NULL) {
+                int len2 = strlen(item->name); //Obtain the length of the item name for the count parameter of fwrite
+                fwrite("\t", sizeof(char), 1, filePtr);
+                fwrite(item->name, sizeof(char), len2,
+                       filePtr); //print current item of the current list to the binary file
+                fwrite("\n", sizeof(char), 1, filePtr);
+                item = item->next;  //Set the item to the next item and repeat the process until there are no items left
+
+            }
+        }
+        ListName = ListName->next;  //Set it to the next list and repeat the process until there are no lists left
+    }
+}
+
+void Option_5(char* filename, struct List *p)
+{
+    int write_type;
+    FILE * filePtr;
+
+    write_type = binary_file_check(filename); //Checks if the file is binary or not
+
+    if(write_type == 1)
+    {
+        filePtr = fopen(filename, "wb"); //Does a binary write if it's binary
+        if(filePtr != NULL)
+        {
+            fwriteLinkedlist(p, filePtr); //Writes board to binary file
+        }
+        else
+        {
+            printf("Error: failed to open the file %s\n", filename); // If the file isn't found we print an error
+        }
+        fclose(filePtr);
+    }
+    else
+    {
+        filePtr = fopen(filename, "w"); //Does a non-binary write if it's not binary
+        if(filePtr != NULL)
+        {
+            fprintLinkedlist(filePtr, p); //Writes board to non-binary file
+        }
+        else
+        {
+            printf("Error: failed to open the file %s\n", filename); // If the file isn't found we print an error
+        }
+        fclose(filePtr);
+    }
+}

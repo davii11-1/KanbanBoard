@@ -328,9 +328,9 @@ void Option_2(char filename[30], struct List *p)
         {
             while((bytes_read = fread(&string[i], sizeof(char), 1, filePtr)) > 0) //Loop until fread reads no more elements
             {
-                if(string[i] == ':') /*If the current character is a colon 
+                if(string[i] == ':') /*If the current character is a colon
                                     * take all characters up to and including that point and take it as a list*/
-                                       
+
                 {
                     if(found2==0) //Gives the head pointer of the lists the information of the first list from the file
                     {
@@ -351,7 +351,7 @@ void Option_2(char filename[30], struct List *p)
                     memset(string, '\0', 1024); //Resets the string all to null terminators
                     i = 0; //Resets string index
                 }
-                else if(string[0] == '\t' && string[i] == '\0') /*If the string's first character is the tab character
+                else if(string[i-1] != ':' && string[i] == '\0' && i > 0) /*If the string's first character is the tab character
                                                                  and the current character is the null terminator we take that string as a item*/
                 {
                     if(found == 1) //Gives the head pointer of the items of that particular list the information from the file
@@ -437,15 +437,15 @@ void freeAllMemory(struct List *p)
 {
     if(p->next == NULL)
     {
-        if(p->first_item->next == NULL)
+        if(p->first_item == NULL)
         {
-            free(p->first_item);
             free(p);
-
         }
-        else if(p->first_item == NULL)
+        else if(p->first_item->next == NULL)
         {
-            free(p);
+                free(p->first_item);
+                free(p);
+
         }
         else
         {
@@ -472,6 +472,13 @@ void freeAllMemory(struct List *p)
             cur = cur->next;
         }
 
+        while(cur->first_item == NULL)
+        {
+            struct List*old_list = cur;
+            cur = cur->prev;
+            free(old_list);
+        }
+
         struct Item* cur_item = cur->first_item;
         while(cur_item->next != NULL)
         {
@@ -480,7 +487,7 @@ void freeAllMemory(struct List *p)
 
     while(p->next != NULL) {
 
-        while (cur->first_item->next != NULL) {
+        while ((cur->first_item)->next != NULL) {
             struct Item *old_item = cur_item;
             cur_item = cur_item->prev;
             free(old_item);

@@ -20,6 +20,8 @@ int main()
     int prev;
     int i=0;
     struct List *FileListNodePtr = malloc(sizeof(struct List));
+    FileListNodePtr->next = NULL;
+    FileListNodePtr->first_item = NULL;
 
 
     struct List* list2 = malloc(sizeof(struct List));
@@ -32,11 +34,6 @@ int main()
     strcpy(list1->name, "Blank");
     list2->prev = list1;
 
-
-
-
-
-
     while(choice != 6) //Terminates when the quit option is selected
     {
         printf("\nMain Menu:\n");
@@ -48,6 +45,7 @@ int main()
         printf("6. Quit\n");
         printf("Enter your choice (1-6): ");
         scanf("%d", &choice);
+        fflush(stdin); //Clears input buffer, so it can accept string input through fgets
 
 
         while(choice < 1 || choice > 6) //Ensures that input is one of the 6 options
@@ -62,6 +60,7 @@ int main()
             printf("\nYou inputted an unavailable option\n");
             printf("Enter your choice again (1-6): ");
             scanf("%d", &choice);
+            fflush(stdin); //Clears input buffer, so it can accept string input through fgets
             printf("\n");
 
         }
@@ -70,7 +69,6 @@ int main()
             prev = choice;
             i++;
         }
-        fflush(stdin); //Clears input buffer, so it can accept string input through fgets
 
         switch(choice)
         {
@@ -90,6 +88,7 @@ int main()
                 len = strlen(filename)-1;
                 filename[len] = '\0'; //Removes the newline character
                 Option_2(filename,FileListNodePtr); //Loads file into new board
+                printLinkedlist(FileListNodePtr);
                 break;
             case 3:
                 printf("\nEnter the name of the list to edit: ");
@@ -184,13 +183,16 @@ int main()
                 }
                 break;
             default:
-                freeAllMemory(list1);
                 freeAllMemory(FileListNodePtr);
                 break; //To ensure there isn't any unwanted outputs when the user selects "Quit"
         }
 
     }
 
+    printf("\n.,__,.....,__,.....╭¬¬¬¬¬¬━━╮\n");
+    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::|:^-----^\n");
+    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::||.◕‿‿◕.|\n");
+    printf("-....--*-...-*-.---╰O━━━━━━O╯╰-O-O--╯\n");
     return 0; //Terminates the program
 }
 

@@ -1,20 +1,20 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "functions.h"
+#include <stdlib.h>
+#include "final_functions.h"
 
-void MainMenu();
+
 void Example_Board(struct List* start_list);
 void Edit_List_Menu();
 void Edit_Item_Menu();
 void Edit_Item_Choice(struct List* list);
 void Edit_List_Choice(struct List* list);
+int choice=0;
 
-int choice = 0;
+
 
 int main()
 {
-<<<<<<< HEAD
     char filename[30];
     int len;
     int prev;
@@ -24,9 +24,6 @@ int main()
     FileListNodePtr->first_item = NULL;
 
 
-=======
-    setvbuf(stdout, NULL, _IONBF, 0);
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
     struct List* list2 = malloc(sizeof(struct List));
     list2->next = NULL;
     list2->first_item = NULL;
@@ -36,24 +33,22 @@ int main()
     list1->first_item = NULL;
     strcpy(list1->name, "Blank");
     list2->prev = list1;
-<<<<<<< HEAD
-=======
-    char str[35];
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
 
     while(choice != 6) //Terminates when the quit option is selected
     {
-        MainMenu();
+        printf("\nMain Menu:\n");
+        printf("1. Display board\n");
+        printf("2. Load board from a file\n");
+        printf("3. Edit list\n");
+        printf("4. Edit Board\n");
+        printf("5. Save board to a file\n");
+        printf("6. Quit\n");
+        printf("Enter your choice (1-6): ");
         scanf("%d", &choice);
-<<<<<<< HEAD
         fflush(stdin); //Clears input buffer, so it can accept string input through fgets
 
 
         while(choice < 1 || choice > 6) //Ensures that input is one of the 6 options
-=======
-        getchar();
-        while(choice < 0 || choice > 6) //Ensures that input is one of the 6 options
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
         {
             printf("\n1. Display board\n");
             printf("2. Load board from a file\n");
@@ -65,7 +60,6 @@ int main()
             printf("\nYou inputted an unavailable option\n");
             printf("Enter your choice again (1-6): ");
             scanf("%d", &choice);
-<<<<<<< HEAD
             fflush(stdin); //Clears input buffer, so it can accept string input through fgets
             printf("\n");
 
@@ -75,89 +69,226 @@ int main()
             prev = choice;
             i++;
         }
-=======
-            getchar();
-        }
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
 
         switch(choice)
         {
             case 1:
-                choice = 0;
-                //Initialize the example board
                 Example_Board(list2);
-                printLinkedlist(list1);
+                printf("\n");
+                printLinkedlist(list1); //prints the template board to user
                 break;
             case 2:
-                choice = 0;
+            if(prev==2 && i > 1)
+                {
+                    freeAllMemory(FileListNodePtr); /*If the last choice between 1 and 2 is 2
+                    when option 2 is selected we free all the memory of the previous linked list*/
+                }
                 printf("\nEnter filename: ");
-<<<<<<< HEAD
                 fgets(filename,30,stdin); //Takes input of filename
                 len = strlen(filename)-1;
                 filename[len] = '\0'; //Removes the newline character
                 Option_2(filename,FileListNodePtr); //Loads file into new board
                 printLinkedlist(FileListNodePtr);
-=======
-                scanf("%s",str); //Takes input of filename
-                LoadFile(str,list2); //Function to load a board from a file
-                printLinkedlist(list1);
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
                 break;
             case 3:
-                choice = 0;
                 printf("\nEnter the name of the list to edit: ");
-                scanf("%s",str); //Takes input of list
-                if(ListFind(list2,str) == NULL)
-                {
-                    break;
-                }
-                else if (strcmp(ListFind(list2,str)->name, str) == 0 )
-                {
-                    choice = 0;
-                    Edit_Item_Choice(list2);
-                }
-                else
-                {
-                    break;
-                }
+                fgets(filename,30,stdin); //Takes input of list
+                len = strlen(filename)-1;
+                filename[len] = '\0'; //Removes the newline character
 
+                if(prev == 1) //Uses template board if 1 was the last choice between 1 and 2
+                {
+                    if(ListFind(list2,filename) == NULL)
+                    {
+                    break;
+                    }
+                    else if (strcmp(ListFind(list2,filename)->name, filename) == 0 )
+                    {
+                        choice = 0;
+                        Edit_Item_Choice(list2);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    //Function to edit items in a given list
+                }
+                else if(prev==2)  //Uses loaded board if 2 was the last choice between 1 and 2 in the template board
+                {
+                    if(ListFind(FileListNodePtr,filename) == NULL)
+                    {
+                        break;
+                    }
+                    else if (strcmp(ListFind(FileListNodePtr,filename)->name, filename) == 0 )
+                    {
+                        choice = 0;
+                        Edit_Item_Choice(FileListNodePtr);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                //Function to edit items in a given list in the file loaded board
+                }
+                else //Uses template board by default if the last choice between 1 and 2 isn't either 1 or 2
+                {
+                    if(ListFind(list2,filename) == NULL)
+                    {
+                        break;
+                    }
+                    else if (strcmp(ListFind(list2,filename)->name, filename) == 0 )
+                    {
+                        choice = 0;
+                        Edit_Item_Choice(list2);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    //Function to edit items in a given list in the template board
+                }
+                break;
             case 4:
-                choice = 0;
-                Edit_List_Choice(list2);
+                if(prev == 1) //Uses template board if 1 was the last choice between 1 and 2
+                {
+                    Edit_List_Choice(list2); //Function to edit the lists on the template board
+                }
+                else if(prev == 2) //Uses loaded board if 2 was the last choice between 1 and 2
+                {
+                    Edit_List_Choice(FileListNodePtr); //Function to edit the lists on the file loaded board
+                }
+                else //Uses template board by default if the last choice between 1 and 2 isn't either 1 or 2
+                {
+                    Edit_List_Choice(list2); //Function to edit the lists on the template board
+                }
                 break;
             case 5:
-                choice = 0;
-                char name[20];
-                printf("Enter file name: ");
-                fgets(name,20,stdin);
-                name[strcspn(name, "\n")] = 0;
-                write_as_file(list1,name);
+                printf("\nEnter filename: ");
+                fgets(filename,20,stdin); //Takes input of filename
+                len = strlen(filename)-1;
+                filename[len] = '\0'; //Removes the newline character
+
+                if(prev == 1) //Uses template board if 1 was the last choice between 1 and 2
+                {
+                    Option_5(filename, list1); //Function to write template board to file
+                }
+                else if(prev==2) //Uses loaded board if 2 was the last choice between 1 and 2
+                {
+                    Option_5(filename, FileListNodePtr); //Function to write file loaded board to file
+                }
+                else //Uses template board by default if the last choice between 1 and 2 isn't either 1 or 2
+                {
+                    Option_5(filename, list1); //Function to write template board to file
+                }
                 break;
             default:
-<<<<<<< HEAD
                 freeAllMemory(FileListNodePtr);
                 break; //To ensure there isn't any unwanted outputs when the user selects "Quit"
-=======
-                break;
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
         }
 
     }
 
-<<<<<<< HEAD
     printf("\n.,__,.....,__,.....╭¬¬¬¬¬¬━━╮\n");
     printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::|:^-----^\n");
     printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::||.◕‿‿◕.|\n");
     printf("-....--*-...-*-.---╰O━━━━━━O╯╰-O-O--╯\n");
     return 0; //Terminates the program
-=======
-    printf(".,__,.....,__,.....╭¬¬¬¬¬¬━━╮\n");
-    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::|:^-----^\n");
-    printf("`•.,¸,.•*¯`•.,¸,.•*|:¬¬¬::::||.◕‿‿◕.|\n");
-    printf("-....--*-...-*-.---╰O━━━━━━O╯╰-O-O--╯\n");
-    return 0;
->>>>>>> 09dc2cd1ed371c8780e2d8fbe7744331f76ee689
 }
+
+
+
+void Example_Board(struct List* start_list)
+{
+    struct List* list1 = malloc(sizeof(struct List));
+    strcpy(list1->name, "Bro:");
+    list1->prev = NULL;
+    strcpy(start_list->name, "Bro:");
+    struct Item* item1_1 = malloc(sizeof(struct Item));
+    strcpy(item1_1->name, "Oculus Pro");
+    struct Item* item1_2 = malloc(sizeof(struct Item));
+    strcpy(item1_2->name, "Oculus Quest 1");
+    item1_1->next = item1_2;
+    item1_2->next = NULL;
+    item1_1->prev = NULL;
+    item1_2->prev = item1_1;
+
+    list1->first_item = item1_1;
+
+    start_list->first_item = item1_1;
+
+
+    struct List* list2 = malloc(sizeof(struct List));
+    strcpy(list2->name, "Dante:");
+    struct Item* item2_1 = malloc(sizeof(struct Item));
+    strcpy(item2_1->name, "Oculus Quest 1");
+    struct Item* item2_2 = malloc(sizeof(struct Item));
+    strcpy(item2_2->name, "3070 RTX");
+    item2_1->next = item2_2;
+    item2_2->next = NULL;
+    item2_1->prev = NULL;
+    item2_2->prev = item2_1;
+    list2->first_item = item2_1;
+
+    struct List* list3 = malloc(sizeof(struct List));
+    strcpy(list3->name, "Tim:");
+    struct Item* item3_1 = malloc(sizeof(struct Item));
+    strcpy(item3_1->name, "Oculus Quest 2");
+    item3_1->next = NULL;
+    item3_1->prev = NULL;
+    list3->first_item = item3_1;
+
+    struct List* list4 = malloc(sizeof(struct List));
+    strcpy(list4->name, "Nick:");
+    struct Item* item4_1 = malloc(sizeof(struct Item));
+    strcpy(item4_1->name, "3070 RTX");
+    item4_1->next = NULL;
+    item4_1->prev = NULL;
+    list4->first_item = item4_1;
+
+    list4->prev = list3;
+    list3->prev = list2;
+    list2->prev = list1;
+    list1->prev = NULL;
+    list1->next = list2;
+    list2->next = list3;
+    list3->next = list4;
+    list4->next = NULL;
+
+list2->prev = start_list;
+
+start_list->next = list2;
+list2->next = list3;
+list3->next = list4;
+list4->next = NULL;
+
+}
+
+
+void Edit_Item_Menu()
+{
+    printf("\nOptions:\n");
+    printf("1. Edit an item\n");
+    printf("2. Add a new item\n");
+    printf("3. Delete an item\n");
+    printf("4. Return to main menu\n");
+    printf("Enter your choice (1-4): ");
+    scanf("%d", &choice);
+    fgetc(stdin);
+}
+
+void Edit_List_Menu()
+{
+    printf("\nOptions:\n");
+    printf("1. Edit the name of a list\n");
+    printf("2. Add a new list \n");
+    printf("3. Delete a list\n");
+    printf("4. Return to main menu\n");
+    printf("Enter your choice (1-4): ");
+    scanf("%d", &choice);
+    fgetc(stdin);
+}
+
 
 void Edit_Item_Choice(struct List* list)
 {
@@ -176,7 +307,7 @@ void Edit_Item_Choice(struct List* list)
                 printf("Enter the new name for item ' %s ': ",old_name);
                 fgets(new_name,20,stdin);
                 new_name[strcspn(new_name, "\n")] = 0;
-                Edit_list(list,old_name,new_name);
+                Edit_item(list,old_name,new_name);
                 choice = 0;
                 break;
             case 2:
@@ -242,89 +373,3 @@ void Edit_List_Choice(struct List* list)
     }
 }
 
-void MainMenu()
-{
-    printf("Menu:\n");
-    printf("1. Display board\n");
-    printf("2. Load board from a file\n");
-    printf("3. Edit list\n");
-    printf("4. Edit Board\n");
-    printf("5. Save board to a file\n");
-    printf("6. Quit\n");
-    printf("Enter your choice (1-6):");
-}
-
-void Edit_Item_Menu()
-{
-    printf("\nOptions:\n");
-    printf("1. Edit an item\n");
-    printf("2. Add a new item\n");
-    printf("3. Delete an item\n");
-    printf("4. Return to main menu\n");
-    printf("Enter your choice (1-4): ");
-    scanf("%d", &choice);
-    fgetc(stdin);
-}
-
-void Edit_List_Menu()
-{
-    printf("\nOptions:\n");
-    printf("1. Edit the name of a list\n");
-    printf("2. Add a new list \n");
-    printf("3. Delete a list\n");
-    printf("4. Return to main menu\n");
-    printf("Enter your choice (1-4): ");
-    scanf("%d", &choice);
-    fgetc(stdin);
-}
-
-void Example_Board(struct List* start_list)
-{
-    strcpy(start_list->name, "Bro:");
-    struct Item* item1_1 = malloc(sizeof(struct Item));
-    strcpy(item1_1->name, "Oculus Pro");
-    struct Item* item1_2 = malloc(sizeof(struct Item));
-    strcpy(item1_2->name, "Oculus Quest 1");
-    item1_1->next = item1_2;
-    item1_2->next = NULL;
-    item1_1->prev = NULL;
-    item1_2->prev = item1_1;
-    start_list->first_item = item1_1;
-
-    struct List* list2 = malloc(sizeof(struct List));
-    strcpy(list2->name, "Dante:");
-    struct Item* item2_1 = malloc(sizeof(struct Item));
-    strcpy(item2_1->name, "Oculus Quest 1");
-    struct Item* item2_2 = malloc(sizeof(struct Item));
-    strcpy(item2_2->name, "3070 RTX");
-    item2_1->next = item2_2;
-    item2_2->next = NULL;
-    item2_1->prev = NULL;
-    item2_2->prev = item2_1;
-    list2->first_item = item2_1;
-
-    struct List* list3 = malloc(sizeof(struct List));
-    strcpy(list3->name, "Tim:");
-    struct Item* item3_1 = malloc(sizeof(struct Item));
-    strcpy(item3_1->name, "Oculus Quest 2");
-    item3_1->next = NULL;
-    item3_1->prev = NULL;
-    list3->first_item = item3_1;
-
-    struct List* list4 = malloc(sizeof(struct List));
-    strcpy(list4->name, "Nick:");
-    struct Item* item4_1 = malloc(sizeof(struct Item));
-    strcpy(item4_1->name, "3070 RTX");
-    item4_1->next = NULL;
-    item4_1->prev = NULL;
-    list4->first_item = item4_1;
-
-    list4->prev = list3;
-    list3->prev = list2;
-    list2->prev = start_list;
-
-    start_list->next = list2;
-    list2->next = list3;
-    list3->next = list4;
-    list4->next = NULL;
-}

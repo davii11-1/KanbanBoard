@@ -379,10 +379,10 @@ void LoadFile(char filename[20],struct List* list)
     fclose(filePtr);
 }
 
-void write_as_file(struct List* list)
+void write_as_file(struct List* list,char* name)
 {
     FILE* F ;
-    F = fopen("Test.dat","wb+");
+    F = fopen(name,"w");
     struct List* curList = list;
     while(curList != NULL)
     {

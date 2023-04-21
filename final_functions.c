@@ -275,7 +275,7 @@ int binary_file_check(char filename[30])
     return binary;
 }
 
-void Option_2(char filename[50], struct List *p)
+void Option_2(char filename[30], struct List *p)
 {
     FILE * filePtr;
     int read_type;
@@ -318,7 +318,6 @@ void Option_2(char filename[50], struct List *p)
                     }
 
                     ListFinder = ListFind(p,string); //Finds the pointer of the list added
-                    printf("%s\n", ListFinder->name);
                     found = 1;
                     memset(string, '\0', 1024);
                     i = 0;
@@ -362,7 +361,6 @@ void Option_2(char filename[50], struct List *p)
                len = strlen(list_name) - 1;
                list_name[len] = '\0'; //Removes the newline character
 
-
                 if(list_name[len-1] == ':') //Search colon as that differentiates lists and items
                 {
                     if(found2==0) //Gives the head pointer of the lists the information of the first list from the file
@@ -380,7 +378,6 @@ void Option_2(char filename[50], struct List *p)
 
                     ListFinder = ListFind(p,list_name); //Finds the pointer of the list added
                     found = 1;
-                    memset(list_name, '\0', 30);
                 }
                 else
                 {
@@ -396,7 +393,6 @@ void Option_2(char filename[50], struct List *p)
                     {
                         ItemPushBack(ListFinder, list_name);
                     }
-                    memset(list_name, '\0', 30);
                 }
             }
         }

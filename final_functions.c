@@ -326,9 +326,11 @@ void Option_2(char filename[30], struct List *p)
         }
         else
         {
-            while(fread(&string[i], sizeof(char), 1, filePtr) > 0)
+            while((bytes_read = fread(&string[i], sizeof(char), 1, filePtr)) > 0) //Loop until fread reads no more elements
             {
-                if(string[i] == ':')
+                if(string[i] == ':') /*If the current character is a colon 
+                                    * take all characters up to and including that point and take it as a list*/
+                                       
                 {
                     if(found2==0) //Gives the head pointer of the lists the information of the first list from the file
                     {
@@ -346,10 +348,11 @@ void Option_2(char filename[30], struct List *p)
 
                     ListFinder = ListFind(p,string); //Finds the pointer of the list added
                     found = 1;
-                    memset(string, '\0', 1024);
-                    i = 0;
+                    memset(string, '\0', 1024); //Resets the string all to null terminators
+                    i = 0; //Resets string index
                 }
-                else if(string[0] == '\t' && string[i] == '\0')
+                else if(string[0] == '\t' && string[i] == '\0') /*If the string's first character is the tab character
+                                                                 and the current character is the null terminator we take that string as a item*/
                 {
                     if(found == 1) //Gives the head pointer of the items of that particular list the information from the file
                     {
@@ -363,12 +366,12 @@ void Option_2(char filename[30], struct List *p)
                     {
                         ItemPushBack(ListFinder, string);
                     }
-                    memset(string, '\0', 1024);
-                    i = 0;
+                    memset(string, '\0', 1024); //Resets the string all to null terminators
+                    i = 0; //Resets string index
                 }
                 else
                 {
-                    i += 1;//bytes_read;
+                    i += bytes_read; //If we encounter none of the two above conditions we move index by the amount of elements read
                 }
             }
         }
